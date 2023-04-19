@@ -1,3 +1,8 @@
+// DOCS LIBS
+// https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda-readme.html
+// https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda_nodejs-readme.html
+// https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html
+
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as lambdaNodeJS from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as cdk from 'aws-cdk-lib';
@@ -22,7 +27,8 @@ export class ProductsAppStack extends cdk.Stack {
           minify: true,
           sourceMap: false
         },
-      })
+      }
+    )
   }
 
 }
