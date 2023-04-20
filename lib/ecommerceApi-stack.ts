@@ -6,6 +6,7 @@ import { Construct } from 'constructs';
 
 interface ECommerceApiStackProps extends cdk.StackProps {
   productsFetchHandler: lambdaNodeJS.NodejsFunction
+  productsAdminHandler: lambdaNodeJS.NodejsFunction
 }
 
 export class ECommerceApiStack extends cdk.Stack {
@@ -34,10 +35,28 @@ export class ECommerceApiStack extends cdk.Stack {
       }
     });
 
+    // add métodos de FETCH em 'products'
     const productsFetchIntegration = new apigateway.LambdaIntegration(props.productsFetchHandler);
 
-    // GET - '/products'
+    // cria o endpoit 'products' à partir do root '/'
     const productsResource = api.root.addResource('products');
+    // cria '{id}' resource à partir de 'products'
+    const productIdResource = productsResource.addResource('{id}');
+    
+    // GET - '/products'
     productsResource.addMethod('GET', productsFetchIntegration);
+    // GET - '/products/{id}'
+    productIdResource.addMethod('GET', productsFetchIntegration);
+
+
+    // add métodos de ADMIN em 'products'
+    const productsAdminIntegration = new apigateway.LambdaIntegration(props.productsAdminHandler);
+    
+    // POST - '/products'
+    productsResource.addMethod('POST', productsAdminIntegration);
+    // PUT - '/products/{id}'
+    productIdResource.addMethod('PUT', productsAdminIntegration);
+    // DELETE - '/products/{id}'
+    productIdResource.addMethod('POST', productsAdminIntegration);
   }  
 }
