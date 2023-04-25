@@ -2,11 +2,13 @@ import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 import { v4 as uuid } from 'uuid';
 
 export interface Product {
+  // o DynamoDB possui alguns nomes reservados, entre eles estão: name e url
   id: string;
-  productName: string;
+  productName: string; // add product antes de name
   code: string;
   price: number;
   model: string;
+  productUrl: string; // add product antes de url
 }
 
 // Doc DynamoDB (Class: AWS.DynamoDB.DocumentClient)
@@ -69,12 +71,13 @@ export class ProductRepository {
       },
       ConditionExpression: 'attribute_exists(id)',
       ReturnValues: 'UPDATED_NEW',
-      UpdateExpression: 'set productName = :n, code = :c, price = :p, model = :m',
+      UpdateExpression: 'set productName = :n, code = :c, price = :p, model = :m, productUrl = :u',
       ExpressionAttributeValues: {
         ':n': product.productName,
         ':c': product.code,
         ':p': product.price,
         ':m': product.model,
+        ':u': product.productUrl,
       }
     }).promise();
     data.Attributes!.id = productId;
